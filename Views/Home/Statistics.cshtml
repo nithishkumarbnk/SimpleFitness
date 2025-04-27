@@ -1,0 +1,11 @@
+﻿@model WebApplication1.Models.FitnessDataViewModel
+
+<h2>Statistics</h2>
+<ul>
+    @foreach (var stat in Model.Statistics)
+    {
+        <li>
+            <strong>@stat.Metric:</strong> @stat.Value @stat.Unit
+        </li>
+    }
+</ul>

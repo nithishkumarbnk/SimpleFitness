@@ -1,0 +1,27 @@
+﻿@model WebApplication1.Models.Achievement
+
+@{
+    ViewData["Title"] = "Achievement Details";
+}
+
+<h1 class="text-primary">Achievement Details</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">
+        <h4>@Model.Title</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Title</dt>
+            <dd class="col-sm-9">@Model.Title</dd>
+
+            <dt class="col-sm-3">Date Achieved</dt>
+            <dd class="col-sm-9">@Model.DateAchieved.ToString("MMMM dd, yyyy")</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit Achievement</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to Achievements</a>
+</div>

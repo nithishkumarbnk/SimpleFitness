@@ -1,0 +1,12 @@
+﻿@model IEnumerable<WebApplication1.Models.Achievement>
+
+<h2>All Achievements</h2>
+<ul>
+    @foreach (var achievement in Model)
+    {
+        <li>
+            @achievement.Title - Achieved on: @achievement.DateAchieved.ToString("MMMM dd, yyyy")
+            <a asp-action="achive" asp-controller="Dashboard" asp-route-id="@achievement.Id" class="text-link">View Details</a>
+        </li>
+    }
+</ul>

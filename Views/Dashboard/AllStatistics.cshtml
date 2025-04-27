@@ -1,0 +1,12 @@
+﻿@model IEnumerable<WebApplication1.Models.Statistic>
+
+<h2>All Statistics</h2>
+<ul>
+    @foreach (var stat in Model)
+    {
+        <li>
+            @stat.Metric
+            <a asp-action="statsticdetails" asp-controller="Dashboard" asp-route-id="@stat.Id" class="text-link">View Details</a>
+        </li>
+    }
+</ul>

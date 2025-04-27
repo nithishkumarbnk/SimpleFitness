@@ -1,0 +1,13 @@
+﻿@model IEnumerable<WebApplication1.Models.Schedule>
+
+<h2>Schedule</h2>
+<ul>
+    @foreach (var schedule in Model)
+    {
+        <li>
+            @schedule.Activity
+            <a asp-action="schedule" asp-controller="Dashboard" asp-route-id="@schedule.Id" class="text-link">View Details</a>
+        </li>
+    }
+</ul>
+

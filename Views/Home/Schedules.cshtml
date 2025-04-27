@@ -1,0 +1,12 @@
+﻿@model WebApplication1.Models.FitnessDataViewModel
+
+<h2>Schedules</h2>
+<ul>
+    @foreach (var schedule in Model.Schedules)
+    {
+        <li>
+            <strong>@schedule.Activity</strong> - Date: @schedule.Date.ToString("MMMM dd, yyyy")
+            | Duration: @schedule.Duration.Hours hours @schedule.Duration.Minutes minutes
+        </li>
+    }
+</ul>

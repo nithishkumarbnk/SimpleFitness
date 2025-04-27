@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - FitnessTracker</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebApplication1.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area=""
+                   asp-controller="@(User.IsInRole("Admin") ? "Admin" : "Home")"
+                   asp-action="@(User.IsInRole("Admin") ? "Dashboard" : "Index")">
+                    FitnessTracker
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        @if (User.Identity.IsAuthenticated) // Check if user is authenticated
+                        {
+                            if (User.IsInRole("Admin")) // For Admin
+                            {
+                                // Check if not on Login page
+                                if (!(ViewContext.RouteData.Values["controller"].ToString() == "Login" && ViewContext.RouteData.Values["action"].ToString() == "Index"))
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Manage Users</a>
+                                    </li>
+                                }
+                            }
+                            else // For regular users
+                            {
+                                // Check if not on Login page
+                                if (!(ViewContext.RouteData.Values["controller"].ToString() == "Login" && ViewContext.RouteData.Values["action"].ToString() == "Index"))
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Workouts" asp-action="Index">Workouts</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Diets" asp-action="Index">Diets</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Dashboard">Dashboard</a>
+                                    </li>
+                                }
+                            }
+                        }
+                    </ul>
+
+                    @if (User.Identity.IsAuthenticated && !(ViewContext.RouteData.Values["controller"].ToString() == "Login" && ViewContext.RouteData.Values["action"].ToString() == "Index"))
+                    {
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-user-circle icon"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li><a class="dropdown-item" href="@Url.Action("Profile", "Account")">My Profile</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Payment", "Account")">Payment</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <form asp-action="Logout" asp-controller="Account" method="post">
+                                        <button type="submit" class="dropdown-item">Logout</button>
+                                    </form>
+                                </ul>
+                            </li>
+                        </ul>
+                    }
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer text-center py-3">
+        <p>&copy; @DateTime.Now.Year Fitness Tracker All rights reserved.</p>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

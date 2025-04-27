@@ -1,0 +1,102 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container mt-4">
+    <h2>Welcome to Your Dashboard, @User.Identity.Name!</h2>
+
+    <div class="row mt-4">
+        <!-- Goals Overview Section -->
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5>Your Goals</h5>
+                </div>
+                <div class="card-body">
+                    <p>Keep track of your current fitness goals.</p>
+                    <ul>
+                        @foreach (var goal in ViewBag.Goals)
+                        {
+                            <li>@goal.Description - Target: @goal.TargetDate.ToString("MMMM dd, yyyy")</li>
+                        }
+                    </ul>
+                   </div>
+            </div>
+        </div>
+
+        <!-- Recent Workouts Section -->
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5>Recent Workouts</h5>
+                </div>
+                <div class="card-body">
+                    <p>Review your recent workouts.</p>
+                    <ul>
+                        @foreach (var workout in ViewBag.RecentWorkouts)
+                        {
+                            <li>@workout.Type - @workout.Duration minutes (@workout.Date.ToString("MMMM dd, yyyy"))</li>
+                        }
+                    </ul>
+                   </div>
+            </div>
+        </div>
+
+        <!-- Statistics Overview Section -->
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5>Statistics</h5>
+                </div>
+                <div class="card-body">
+                    <p>See your progress in numbers.</p>
+                    <ul>
+                        @foreach (var stat in ViewBag.Statistics)
+                        {
+                            <li>@stat.Metric: @stat.Value @stat.Unit</li>
+                        }
+                    </ul>
+                   </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Achievements Section -->
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-warning text-white">
+                    <h5>Achievements</h5>
+                </div>
+                <div class="card-body">
+                    <p>Celebrate your accomplishments!</p>
+                    <ul>
+                        @foreach (var achievement in ViewBag.Achievements)
+                        {
+                            <li>@achievement.Title - Achieved on: @achievement.DateAchieved.ToString("MMMM dd, yyyy")</li>
+                        }
+                    </ul>
+                   </div>
+            </div>
+        </div>
+
+        <!-- Schedule Section -->
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-secondary text-white">
+                    <h5>Schedule</h5>
+                </div>
+                <div class="card-body">
+                    <p>Stay on top of your weekly workout schedule.</p>
+                    <ul>
+                        @foreach (var item in ViewBag.Schedule)
+                        {
+                            <li>@item.Activity - Date: @item.Date.ToString("MMMM dd, yyyy")</li>
+                        }
+                    </ul>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

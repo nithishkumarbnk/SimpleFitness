@@ -1,0 +1,12 @@
+﻿@model IEnumerable<WebApplication1.Models.Workout>
+
+<h2>All Workouts</h2>
+<ul>
+    @foreach (var workout in Model)
+    {
+        <li>
+            @workout.Type
+            <a asp-action="workouts" asp-controller="Dashboard" asp-route-id="@workout.Id" class="text-start mt-3 text-link">View Details</a>
+        </li>
+    }
+</ul>

@@ -1,0 +1,239 @@
+﻿@using System.Globalization
+@model WebApplication1.Models.FitnessDataViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+    var currentDateTime = DateTime.Now;
+    var weekNumber = CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(currentDateTime, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Fitness Tracker</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        /* Improved styling for the date and week number */
+        .date-info {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #007bff;
+            margin: 0;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+            .nav-menu a {
+                text-decoration: none;
+                color: #333;
+                padding: 8px 0;
+            }
+
+                .nav-menu a.active {
+                    font-weight: bold;
+                    border-left: 4px solid #007bff;
+                    padding-left: 8px;
+                }
+    </style>
+</head>
+<body>
+    <div>
+        <!-- Top NavBar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+            <div class="container-fluid">
+                <!-- Center Section: Date Info -->
+                <div class="d-flex mx-auto">
+                    <span class="navbar-text date-info">
+                        @currentDateTime.ToString("MMMM dd, yyyy - hh:mm tt") | Week: @weekNumber
+                    </span>
+                </div>
+
+                <!-- Right-aligned Notification and User Settings -->
+                <ul class="navbar-nav ms-auto d-flex align-items-center">
+                    <!-- Notification -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fa-solid fa-bell icon"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Container for Sidebar and Main Content -->
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Sidebar -->
+                <aside class="col-md-3 col-lg-2 sidebar">
+                    @if (Model.CurrentUser != null)
+                    {
+                        <div>
+                            @* Display user image if available *@
+                            @if (Model.CurrentUser.ImageData != null && Model.CurrentUser.ImageData.Length > 0)
+                            {
+                                var base64Image = Convert.ToBase64String(Model.CurrentUser.ImageData);
+                                <img src="data:image/jpeg;base64,@base64Image" alt="Profile Image" class="img-fluid rounded-circle" style="width: 150px; height: 150px;" />
+                            }
+                            else
+                            {
+                                <p>No profile image available.</p>
+                            }
+                            <h2>@Model.CurrentUser.Name</h2>
+                            <p>Email: @Model.CurrentUser.Email</p>
+                            <p>Gender: @Model.CurrentUser.Gender</p>
+                            <p>Age: @Model.CurrentUser.Age</p>
+                            <p>Height: @Model.CurrentUser.Height cm</p>
+                            <p>Weight: @Model.CurrentUser.Weight kg</p>
+                            
+                        </div>
+                    }
+                    else
+                    {
+                        <p>No user details available.</p>
+                    }
+
+                    <!-- Navigation Links -->
+                    <nav class="nav-menu mt-4">
+                        <a href="@Url.Action("Index", "Goals")">My Goals</a>
+                        <a href="@Url.Action("Index", "Schedules")">Schedule</a>
+                        <a href="@Url.Action("Index", "Achievements")">Achievements</a>
+                        <a href="@Url.Action("Index", "Statistics")">Statistics</a>
+                    </nav>
+                </aside>
+
+                <!-- Main Dashboard Content -->
+                <main class="col-md-9 col-lg-10 dashboard-section">
+                    <div class="container mt-4">
+                        <h2>Welcome to Your Dashboard, @User.Identity.Name!</h2>
+
+                        <div class="row mt-4">
+                            <!-- Goals Overview Section -->
+                            <div class="col-md-4">
+                                <div class="card shadow-sm mb-4">
+                                    <div class="card-header bg-primary text-white">
+                                        <h5>Your Goals</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p>Keep track of your current fitness goals.</p>
+                                        <ul>
+                                            @foreach (var goal in Model.Goals)
+                                            {
+                                                <li>@goal.Description - Target: @goal.TargetDate.ToString("MMMM dd, yyyy")  
+                                                <a asp-action="goaldetails" asp-controller="Dashboard" asp-route-id="@goal.Id" class="btn btn-sm btn-primary">View Details</a>
+                                                </li>                        
+                                            }
+                                            <a asp-action="AllGoals" asp-controller="Dashboard" class="btn bg-primary text-white btn-sm mt-3">View All Goals</a>
+
+                                        </ul>
+                                        
+                                     </div>
+                                </div>
+                            </div>
+
+                            <!-- Recent Workouts Section -->
+                            <div class="col-md-4">
+                                <div class="card shadow-sm mb-4">
+                                    <div class="card-header bg-success text-white">
+                                        <h5>Recent Workouts</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p>Review your recent workouts.</p>
+                                        <ul>
+                                            @foreach (var workout in Model.RecentWorkouts)
+                                            {
+                                                <li>@workout.Type - @workout.Duration minutes (@workout.Date.ToString("MMMM dd, yyyy")
+                                                    <a asp-action="workouts" asp-controller="Dashboard" asp-route-id="@workout.Id" class="text-link">View Workout</a>
+                                                </li>
+                                            }
+                                        
+                                        <a asp-action="AllWorkouts" asp-controller="Dashboard" class="btn btn-primary btn-sm mt-3">All WorkOuts</a>
+                                    </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Statistics Overview Section -->
+                            <div class="col-md-4">
+                                <div class="card shadow-sm mb-4">
+                                    <div class="card-header bg-info text-white">
+                                        <h5>Statistics</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p>See your progress in numbers.</p>
+                                        <ul>
+                                            @foreach (var stat in Model.Statistics)
+                                            {
+                                                <li>@stat.Metric: @stat.Value @stat.Unit
+                                                    <a asp-action="statisticdetails" asp-controller="Dashboard" asp-route-id="@stat.Id" class="text-link">View Details</a>
+
+                                                </li>
+                                            }
+                                        </ul>
+                                        <a asp-action="AllStatistics" asp-controller="Dashboard" class="btn btn-primary btn-sm mt-3">View All Statistics</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Achievements Section -->
+                            <div class="col-md-6">
+                                <div class="card shadow-sm mb-4">
+                                    <div class="card-header bg-warning text-white">
+                                        <h5>Achievements</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p>Celebrate your accomplishments!</p>
+                                        <ul>
+                                            @foreach (var achievement in Model.Achievements)
+                                            {
+                                                <li>@achievement.Title - Achieved on: @achievement.DateAchieved.ToString("MMMM dd, yyyy")
+                                                    <a asp-action="achievementdetails" asp-controller="Dashboard" asp-route-id="@achievement.Id" class="text-link">View Details</a>
+
+                                                </li>
+                                            }
+                                        
+                                        <a asp-action="AllAchive" asp-controller="Dashboard" class="btn btn-primary btn-sm mt-3">View All Achievements</a>
+                                    </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Schedule Section -->
+                            <div class="col-md-6">
+                                <div class="card shadow-sm mb-4">
+                                    <div class="card-header bg-secondary text-white">
+                                        <h5>Schedule</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p>Stay on top of your weekly workout schedule.</p>
+                                        <ul>
+                                            @foreach (var schedule in Model.Schedules)
+                                            {
+                                                <li>
+                                                    @schedule.Activity - Date: @schedule.Date.ToString("MMMM dd, yyyy"), Duration: @schedule.Duration minutes
+                                                    <!-- Link for viewing details of each schedule item -->
+                                                    <a asp-action="scheduledetails" asp-controller="Dashboard" asp-route-id="@schedule.Id" class="text-link">View Details</a>
+                                                </li>
+                                            }
+                                            <a asp-action="AllSchedule" asp-controller="Dashboard" class="btn btn-primary btn-sm mt-3">View All Schedules</a>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

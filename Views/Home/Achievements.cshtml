@@ -1,0 +1,11 @@
+﻿@model WebApplication1.Models.FitnessDataViewModel
+
+<h2>Achievements</h2>
+<ul>
+    @foreach (var achievement in Model.Achievements)
+    {
+        <li>
+            <strong>@achievement.Title</strong> - Achieved on: @achievement.DateAchieved.ToString("MMMM dd, yyyy")
+        </li>
+    }
+</ul>

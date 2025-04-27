@@ -1,0 +1,12 @@
+﻿@model WebApplication1.Models.FitnessDataViewModel
+
+<h2>My Goals</h2>
+<ul>
+    @foreach (var goal in Model.Goals)
+    {
+        <li>
+            <strong>@goal.Description</strong> - Target: @goal.TargetDate.ToString("MMMM dd, yyyy")
+            <span>@(goal.IsCompleted ? "✔️ Completed" : "⏳ In Progress")</span>
+        </li>
+    }
+</ul>

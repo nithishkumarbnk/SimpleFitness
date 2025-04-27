@@ -1,0 +1,12 @@
+﻿@model IEnumerable<WebApplication1.Models.Diet>
+
+<h2>Diet Log</h2>
+<ul>
+    @foreach (var diet in Model)
+    {
+        <li>
+            @diet.FoodItem - Calories: @diet.Calories kcal, Date: @diet.Date.ToString("MMMM dd, yyyy")
+            <a asp-action="dietdetails" asp-controller="Dashboard" asp-route-id="@diet.Id" class="text-link">View Details</a>
+        </li>
+    }
+</ul>

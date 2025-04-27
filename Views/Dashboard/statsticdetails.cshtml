@@ -1,0 +1,30 @@
+﻿@model WebApplication1.Models.Statistic
+
+@{
+    ViewData["Title"] = "Statistic Details";
+}
+
+<h1 class="text-danger">Statistic Details</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-danger text-white">
+        <h4>@Model.Metric</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Metric</dt>
+            <dd class="col-sm-9">@Model.Metric</dd>
+
+            <dt class="col-sm-3">Value</dt>
+            <dd class="col-sm-9">@Model.Value @Model.Unit</dd>
+
+            <dt class="col-sm-3">Unit</dt>
+            <dd class="col-sm-9">@Model.Unit</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit Statistic</a>
+    <a asp-action="AllStatistics" asp-controller="Dashboard" class="btn btn-secondary">Back to Statistics</a>
+</div>

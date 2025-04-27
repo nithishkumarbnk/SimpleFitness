@@ -1,0 +1,12 @@
+﻿@model IEnumerable<WebApplication1.Models.Goal>
+
+<h2>All Goals</h2>
+<ul>
+    @foreach (var goal in Model)
+    {
+        <li>
+            @goal.Description - Target: @goal.TargetDate.ToString("MMMM dd, yyyy")
+            <a asp-action="goaldetails" asp-controller="Dashboard" asp-route-id="@goal.Id" class="text-start mt-3 text-link">View Details</a>
+        </li>
+    }
+</ul>

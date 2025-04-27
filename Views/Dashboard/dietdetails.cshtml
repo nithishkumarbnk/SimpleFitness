@@ -1,0 +1,30 @@
+﻿@model WebApplication1.Models.Diet
+
+@{
+    ViewData["Title"] = "Diet Details";
+}
+
+<h1 class="text-success">Diet Details</h1>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-success text-white">
+        <h4>@Model.FoodItem</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Food Item</dt>
+            <dd class="col-sm-9">@Model.FoodItem</dd>
+
+            <dt class="col-sm-3">Calories</dt>
+            <dd class="col-sm-9">@Model.Calories kcal</dd>
+
+            <dt class="col-sm-3">Date</dt>
+            <dd class="col-sm-9">@Model.Date.ToString("MMMM dd, yyyy")</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit Diet Entry</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to Diet Log</a>
+</div>

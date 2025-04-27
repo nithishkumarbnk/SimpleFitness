@@ -1,0 +1,8 @@
+﻿@model WebApplication1.Models.User
+
+<h1>Admin Profile</h1>
+
+<!-- Render shared profile details partial view -->
+@{
+    Html.RenderPartial("_ProfileDetails", Model);
+}
